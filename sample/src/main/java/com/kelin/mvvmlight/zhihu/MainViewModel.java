@@ -28,7 +28,7 @@ public class MainViewModel implements ViewModel {
     // viewModel for recycler header viewPager
     public final ItemView topItemView = ItemView.of(com.kelin.mvvmlight.zhihu.BR.viewModel, R.layout.viewpager_item_top_news);
     public final ObservableList<TopItemViewModel> topItemViewModel = new ObservableArrayList<>();
-
+    public final ObservableList<? extends ViewModel> itemViewModel = new ObservableArrayList<>();
 
     public MainViewModel(Activity activity) {
         context=activity;

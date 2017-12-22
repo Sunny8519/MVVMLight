@@ -16,6 +16,7 @@ import com.kelin.mvvmlight.zhihu.ZhiHuApp;
 import com.kelin.mvvmlight.zhihu.retrofit.RetrofitProvider;
 import com.trello.rxlifecycle.FragmentLifecycleProvider;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 import me.tatarka.bindingcollectionadapter.BaseItemViewSelector;
@@ -24,6 +25,8 @@ import me.tatarka.bindingcollectionadapter.ItemViewSelector;
 import rx.Notification;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
@@ -96,9 +99,24 @@ public class NewsViewModel implements ViewModel {
                 .subscribe(n -> Toast.makeText(fragment.getActivity(), "load finish!", Toast.LENGTH_SHORT).show());
 
         Observable.just(Calendar.getInstance())
-                .doOnNext(c -> c.add(Calendar.DAY_OF_MONTH, 1))
-                .map(c -> NewsListHelper.DAY_FORMAT.format(c.getTime()))
-                .subscribe(d -> loadTopNews(d));
+                .doOnNext(new Action1<Calendar>() {
+                    @Override
+                    public void call(Calendar calendar) {
+                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                    }
+                })
+                .map(new Func1<Calendar, String>() {
+                    @Override
+                    public String call(Calendar calendar) {
+                        return NewsListHelper.DAY_FORMAT.format(calendar.getTime());
+                    }
+                })
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        loadTopNews(s);
+                    }
+                });
     }
 
 
@@ -120,7 +138,7 @@ public class NewsViewModel implements ViewModel {
                         .map(d -> new NewsService.News.StoriesBean(d))
                         .subscribe(d -> itemViewModel.add(new NewItemViewModel(fragment.getActivity(), d))))
                 .doOnNext(m -> news = m)
-                .doAfterTerminate(()-> viewStyle.isRefreshing.set(false))
+                .doAfterTerminate(() -> viewStyle.isRefreshing.set(false))
                 .flatMap(m -> Observable.from(m.getStories()))
                 .subscribe(i -> itemViewModel.add(new NewItemViewModel(fragment.getActivity(), i)));
 
