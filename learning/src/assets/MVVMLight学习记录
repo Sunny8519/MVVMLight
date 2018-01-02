@@ -1,0 +1,65 @@
+### 1.MVC模型
+MVC分为Model,View和Controller三层。
+
+Model:包括实体类，存储操作，网络操作等；
+
+View:包括XML文件；
+
+Controller:Activity,Fragment等。
+
+说明：MVC中的View层功能太弱，导致UI操作逻辑必须写在Controller层中，而Controller层还需要承载业务
+逻辑的处理，这样会导致Controller层的代码量巨大，逻辑耦合严重。
+
+### 2.MVP模型
+MVP分为Model,View和Presenter三层
+
+Model:与MVC模型中的Model功能相同，一般包括实体模型（bean类），Retrofit的Service，获取
+网络数据的接口，本地存储（增删改查）接口以及数据的变化监听等。
+
+View:包括Activity，Fragment等以及XML文件。
+
+Presenter:实现View层和Model层的交互以及业务逻辑。
+
+说明：Presenter和View的交互是以View层抽象出来的接口为前提
+
+### 3.MVVM模型
+ViewModel包含的代码：
+- Context(一般为Activity或者Fragment)
+- Model(数据源,Java Bean)
+- Data Field(数据绑定)
+- Command(命令绑定)
+- Child ViewModel(子View的ViewModel)
+
+说明：在ViewModel中持有Context引用的目的在于网络请求需要绑定组件的生命周期，防止出现网络请求
+导致的内存溢出问题，还有就是ViewModel中的部分操作需要使用到Context，比如某些Utils；
+在页面业务逻辑较复杂的情况下，我们可以使用ViewModel的嵌套的形式，把一个页面的业务进行划分，不同
+的业务放入不同的ViewModel中，然后外面包裹一个大的ViewModel,这样做的目的在于使代码看起来更优雅
+，方便维护；
+理论上来说，ViewModel中是不应该出现具体View的引用的，比如Button,TextView等，因为如果出现了
+这样的情况，当这个控件变化了，就需要去修改ViewModel里的代码，从这一层面来说，ViewModel就没有
+很好的和View层解耦，我们期望的目标是不管View层的控件如何变化，UI逻辑如何变化，应该不会影响到
+ViewModel层的代码，在MVVMLight中的ReplyCommon对这一层进行了封装，统一了所有的事件回调，达到
+ViewModel和View很好的解耦效果。
+
+View层可以对ViewModel中的属性进行监听，ViewModel层只需关注数据的处理和业务逻辑。
+
+Model层的代码可以单独抽出来，以面向接口编程的方式向外界提供接口。
+
+ViewModel和ViewModel的协作：
+ViewModel和ViewModel之间的通信可以采用Messenger的方式。
+
+### 4.RxJava
+BehaviorSubject用法
+
+### 5.Gson
+https://www.jianshu.com/p/fc5c9cdf3aab
+
+
+
+
+
+
+
+
+
+
