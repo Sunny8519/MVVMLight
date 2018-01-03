@@ -47,11 +47,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="15dp"
-                    android:padding="5dp"
                     android:fitsSystemWindows="true"
+                    android:padding="5dp"
+                    app:gapWidth="10dp"
                     app:pageColor="#88888888"
-                    app:strokeColor="#88888888"
-                    app:gapWidth="10dp" />
+                    app:strokeColor="#88888888" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"

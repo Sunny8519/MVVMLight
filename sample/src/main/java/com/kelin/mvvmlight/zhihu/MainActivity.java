@@ -35,7 +35,9 @@ public class MainActivity extends RxAppCompatActivity
         binding.setVariable(com.kelin.mvvmlight.zhihu.BR.viewModel, new MainViewModel(this));
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //设置Activity的标题栏为ToolBar
         setSupportActionBar(toolbar);
+        //显示标题
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         ((AppBarLayout) findViewById(R.id.appBarLayout)).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
