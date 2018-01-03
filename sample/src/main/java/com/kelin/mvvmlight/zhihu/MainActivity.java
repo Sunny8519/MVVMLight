@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,6 +26,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 public class MainActivity extends RxAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private AlphaForegroundColorSpan alphaForegroundColorSpan;
     private SpannableString actionBarTitleSpan;
 
@@ -43,9 +45,17 @@ public class MainActivity extends RxAppCompatActivity
         ((AppBarLayout) findViewById(R.id.appBarLayout)).addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.i(TAG, "verticalOffset = " + verticalOffset);
+                //获取AppBarLayout展开之后除去ToolBar和状态栏高度的高度
                 int height = appBarLayout.getHeight() - getSupportActionBar().getHeight() - ViewUtils.getStatusBarHeight(MainActivity.this);
+                Log.i(TAG, "height = " + height);
+                //verticalOffset为负值，向上滑动，verticalOffset值越来越小，逐渐趋向于-height，向下滑动，verticalOffset值越来越大，逐渐趋向于0
+                //因此向上滑动，alpha的值逐渐趋向于255，向下滑动，alpha的值逐渐趋向于0
                 int alpha = 255 * (0 - verticalOffset) / height;
+                Log.i(TAG, "alpha = " + alpha);
+                //设置CollapsingToolbarLayout展开后Title的字体颜色
                 collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0, 255, 255, 255));
+                //设置CollapsingToolbarLayout发生折叠时Title字体颜色的变化
                 collapsingToolbarLayout.setCollapsedTitleTextColor(Color.argb(alpha, 255, 255, 255));
             }
         });
